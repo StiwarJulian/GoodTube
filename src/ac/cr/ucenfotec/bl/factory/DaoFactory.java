@@ -5,11 +5,19 @@
  */
 package ac.cr.ucenfotec.bl.factory;
 
+import ac.cr.ucenfotec.bl.canton.ICantonDAO;
+import ac.cr.ucenfotec.bl.categoria.ICategoriaDAO;
+import ac.cr.ucenfotec.bl.distrito.IDistritoDAO;
+import ac.cr.ucenfotec.bl.provincia.IProvinciaDAO;
+import ac.cr.ucenfotec.bl.tema.ITemaDAO;
+import ac.cr.ucenfotec.bl.video.IVideoDAO;
+
 /**
  *
  * @author Miguel
  */
-public class DaoFactory {
+public abstract class DaoFactory {
+
     public static final int MYSQL = 1;
     public static final int SQLSERVER = 2;
 
@@ -17,9 +25,22 @@ public class DaoFactory {
         switch (factory) {
             case MYSQL:
                 return new MySqlDaoFactory();
-            
+
             default:
                 return null;
         }
     }
+
+    public abstract IVideoDAO getVideosDao();
+
+    public abstract ICategoriaDAO getCategoriaDAO();
+
+    public abstract IProvinciaDAO getProvinciaDAO();
+
+    public abstract ICantonDAO getCantonDAO();
+    
+    public abstract IDistritoDAO getDistritoDAO();
+
+    public abstract ITemaDAO getTemaDAO();
+
 }
