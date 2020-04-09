@@ -15,7 +15,7 @@ public class AccesoBD {
 
     public static final String DRIVER = "com.mysql.jdbc.Driver";
     public static final String USER = "root";
-    public static final String PASSWORD = "";
+    public static final String PASSWORD = "root";
     public static final String URL = "jdbc:mysql://localhost/goodtube";
 
     public static Conector getConnection() throws Exception {
