@@ -5,11 +5,13 @@
  */
 package ac.cr.ucenfotec.bl.factory;
 
+import ac.cr.ucenfotec.bl.administrador.IAdministradorDAO;
 import ac.cr.ucenfotec.bl.canton.ICantonDAO;
 import ac.cr.ucenfotec.bl.categoria.ICategoriaDAO;
 import ac.cr.ucenfotec.bl.distrito.IDistritoDAO;
 import ac.cr.ucenfotec.bl.provincia.IProvinciaDAO;
 import ac.cr.ucenfotec.bl.tema.ITemaDAO;
+import ac.cr.ucenfotec.bl.usuarios.IUsuariosDAO;
 import ac.cr.ucenfotec.bl.video.IVideoDAO;
 
 /**
@@ -42,5 +44,8 @@ public abstract class DaoFactory {
     public abstract IDistritoDAO getDistritoDAO();
 
     public abstract ITemaDAO getTemaDAO();
-
+    
+    public abstract IUsuariosDAO getUsuariosDao();
+    
+    public abstract IAdministradorDAO getAdministradorDao();
 }

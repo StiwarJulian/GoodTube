@@ -5,6 +5,8 @@
  */
 package ac.cr.ucenfotec.bl.factory;
 
+import ac.cr.ucenfotec.bl.administrador.IAdministradorDAO;
+import ac.cr.ucenfotec.bl.administrador.IMySqlAdministradorDAO;
 import ac.cr.ucenfotec.bl.canton.ICantonDAO;
 import ac.cr.ucenfotec.bl.canton.mySQLCantonDAO;
 import ac.cr.ucenfotec.bl.categoria.ICategoriaDAO;
@@ -15,6 +17,8 @@ import ac.cr.ucenfotec.bl.provincia.IProvinciaDAO;
 import ac.cr.ucenfotec.bl.provincia.mySQLProvinciaDAO;
 import ac.cr.ucenfotec.bl.tema.ITemaDAO;
 import ac.cr.ucenfotec.bl.tema.mySQLTemaDAO;
+import ac.cr.ucenfotec.bl.usuarios.IMySqlUsuariosDAO;
+import ac.cr.ucenfotec.bl.usuarios.IUsuariosDAO;
 import ac.cr.ucenfotec.bl.video.IVideoDAO;
 import ac.cr.ucenfotec.bl.video.mySQLVideoDAO;
 
@@ -53,4 +57,15 @@ public class MySqlDaoFactory extends DaoFactory{
     public ITemaDAO getTemaDAO() {
         return new mySQLTemaDAO();
     }
+    
+    @Override
+    public IUsuariosDAO getUsuariosDao() {
+        return new IMySqlUsuariosDAO();
+    }
+
+    @Override
+    public IAdministradorDAO getAdministradorDao() {
+        return new IMySqlAdministradorDAO();
+    }
+    
 }

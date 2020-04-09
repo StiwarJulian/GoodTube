@@ -5,8 +5,6 @@
  */
 package ac.cr.ucenfotec.bl.video;
 
-import ac.cr.ucenfotec.bl.usuario.Usuario;
-import ac.cr.ucenfotec.bl.categoria.Categoria;
 import java.util.Date;
 
 /**
