@@ -34,4 +34,10 @@ public class ControllerVideo {
         IVideoDAO dao = factory.getVideosDao();
         return dao.listar();
     }
+
+    public static void eliminar(String id) {
+        DaoFactory factory = DaoFactory.getDaoFactory(DaoFactory.MYSQL);
+        IVideoDAO dao = factory.getVideosDao();
+        dao.eliminar(Integer.parseInt(id));
+    }
 }

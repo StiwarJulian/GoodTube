@@ -20,7 +20,7 @@ public class mySQLVideoDAO implements IVideoDAO {
     @Override
     public void insertar(String nombre, Date fecha, String ruta, int calificacion, int categoria, int usuario, double valor) {
         String query = "INSERT INTO `video`(`id_video`,`nombre`, `fecha`, `ruta`, `calificacion`, `id_categoria`, `id_usuario`, `valor`)"
-                + " VALUES ('null','" + nombre + "'" + fecha + "','" + ruta + "'," + calificacion + "," + categoria + "," + usuario + "," + valor + ")";
+                + " VALUES (null,'" + nombre + "','" + new java.sql.Date(fecha.getTime()) + "','" + ruta + "'," + calificacion + "," + categoria + "," + usuario + "," + valor + ")";
         try {
             AccesoBD.getConnection().ejecutarActualizacion(query);
         } catch (Exception e) {
@@ -30,7 +30,7 @@ public class mySQLVideoDAO implements IVideoDAO {
 
     @Override
     public void modificar(int id, String nombre, Date fecha, String ruta, int calificacion, int categoria, int usuario, double valor) {
-        String query = "UPDATE `video` SET `nombre`='" + nombre + ",`fecha`='" + fecha + "',`ruta`='" + ruta + "',"
+        String query = "UPDATE `video` SET `nombre`='" + nombre + "',`fecha`='" + new java.sql.Date(fecha.getTime()) + "',`ruta`='" + ruta + "',"
                 + "`calificacion`=" + calificacion + ",`id_categoria`=" + categoria
                 + "`id_usuario`='" + usuario + ",`valor`='" + valor + " WHERE `id_video`=" + id;
         try {
@@ -55,7 +55,7 @@ public class mySQLVideoDAO implements IVideoDAO {
         HashMap<Integer, Video> videos = new HashMap<Integer, Video>();
         ResultSet rs = null;
         try {
-            rs = AccesoBD.getConnection().ejecutarQuery("SELECT * FROM Video");
+            rs = AccesoBD.getConnection().ejecutarQuery("SELECT * FROM `video`");
             while (rs.next()) {
                 Video video = new Video(rs.getInt(1), rs.getString(2), rs.getDate(3), rs.getString(4),
                         rs.getInt(5), rs.getInt(6), rs.getInt(7), rs.getDouble(8));

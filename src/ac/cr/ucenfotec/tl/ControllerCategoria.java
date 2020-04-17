@@ -9,6 +9,7 @@ import ac.cr.ucenfotec.bl.categoria.Categoria;
 import ac.cr.ucenfotec.bl.categoria.ICategoriaDAO;
 import ac.cr.ucenfotec.bl.factory.DaoFactory;
 import java.util.HashMap;
+
 /**
  *
  * @author Pardo
@@ -27,9 +28,15 @@ public class ControllerCategoria {
         dao.modificar(id, nombre, descripcion);
     }
 
-    public static HashMap<Integer, Categoria> listar(){
+    public static HashMap<Integer, Categoria> listar() {
         DaoFactory factory = DaoFactory.getDaoFactory(DaoFactory.MYSQL);
         ICategoriaDAO dao = factory.getCategoriaDAO();
         return dao.listar();
+    }
+
+    public static void eliminar(int id) {
+        DaoFactory factory = DaoFactory.getDaoFactory(DaoFactory.MYSQL);
+        ICategoriaDAO dao = factory.getCategoriaDAO();
+        dao.eliminar(id);
     }
 }

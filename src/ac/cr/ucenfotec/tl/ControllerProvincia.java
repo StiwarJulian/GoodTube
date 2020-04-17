@@ -9,6 +9,7 @@ import ac.cr.ucenfotec.bl.factory.DaoFactory;
 import ac.cr.ucenfotec.bl.provincia.IProvinciaDAO;
 import ac.cr.ucenfotec.bl.provincia.Provincia;
 import java.util.HashMap;
+
 /**
  *
  * @author Pardo
@@ -27,9 +28,15 @@ public class ControllerProvincia {
         dao.modificar(id, nombre);
     }
 
-    public static HashMap<Integer, Provincia> listar(){
+    public static HashMap<Integer, Provincia> listar() {
         DaoFactory factory = DaoFactory.getDaoFactory(DaoFactory.MYSQL);
         IProvinciaDAO dao = factory.getProvinciaDAO();
         return dao.listar();
+    }
+
+    public static void eliminar(int id) {
+        DaoFactory factory = DaoFactory.getDaoFactory(DaoFactory.MYSQL);
+        IProvinciaDAO dao = factory.getProvinciaDAO();
+        dao.eliminar(id);
     }
 }

@@ -33,4 +33,10 @@ public class ControllerTema {
         ITemaDAO dao = factory.getTemaDAO();
         return dao.listar();
     }
+
+    public static void eliminar(int id) {
+        DaoFactory factory = DaoFactory.getDaoFactory(DaoFactory.MYSQL);
+        ITemaDAO dao = factory.getTemaDAO();
+        dao.eliminar(id);
+    }
 }

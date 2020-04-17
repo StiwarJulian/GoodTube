@@ -1,4 +1,3 @@
-
 package ac.cr.ucenfotec.bl.usuarios;
 
 import ac.cr.ucenfotec.AccesoBD;
@@ -7,22 +6,22 @@ import java.util.logging.Logger;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import static java.time.Clock.system;
+import java.util.HashMap;
 import javax.swing.JOptionPane;
 
+public class IMySqlUsuariosDAO implements IUsuariosDAO {
 
-public class IMySqlUsuariosDAO implements IUsuariosDAO{
-    
     String query;
 
     @Override
     public Usuarios comprobarUsuario(String usuario, String clave) {
-        
+
         try {
-            query = "SELECT * FROM usuario WHERE usuario= '"+usuario+"' AND clave='"+clave+"'";
-            
+            query = "SELECT * FROM usuario WHERE usuario= '" + usuario + "' AND clave='" + clave + "'";
+
             ResultSet rs = AccesoBD.getConnection().ejecutarQuery(query);
-            
-            if(rs.next()){
+
+            if (rs.next()) {
                 Usuarios user = new Usuarios(
                         rs.getInt("id_usuario"),
                         rs.getLong("identificacion"),
@@ -37,12 +36,12 @@ public class IMySqlUsuariosDAO implements IUsuariosDAO{
                         rs.getInt("id_distrito"),
                         rs.getInt("id_rol")
                 );
-                
+
                 return user;
-            }else{
+            } else {
                 return null;
             }
-            
+
         } catch (Exception ex) {
             Logger.getLogger(IMySqlUsuariosDAO.class.getName()).log(Level.SEVERE, null, ex);
             return null;
@@ -51,12 +50,12 @@ public class IMySqlUsuariosDAO implements IUsuariosDAO{
 
     @Override
     public boolean actualizarCodigoVerificacion(int id_usuario, int codigo_verificacion) {
-        
+
         try {
-            query = "UPDATE usuario SET codigo_verificacion="+codigo_verificacion+" WHERE id_usuario="+id_usuario;
-            
+            query = "UPDATE usuario SET codigo_verificacion=" + codigo_verificacion + " WHERE id_usuario=" + id_usuario;
+
             AccesoBD.getConnection().ejecutarActualizacion(query);
-            
+
             return true;
         } catch (Exception ex) {
             Logger.getLogger(IMySqlUsuariosDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -65,38 +64,38 @@ public class IMySqlUsuariosDAO implements IUsuariosDAO{
     }
 
     @Override
-    public void guardarUsuario(Usuarios usuarios){
-        try{
+    public void guardarUsuario(Usuarios usuarios) {
+        try {
             query = "INSERT INTO usuario(id_usuario,identificacion,nombres,apellidos,edad,"
                     + "correo,usuario,clave,avatar,codigo_verificacion,id_distrito,id_rol)"
                     + " VALUES(null,"
-                    + usuarios.getIdentificacion() +   ",'"
-                    + usuarios.getNombres()        +   "','"
-                    + usuarios.getApellidos()      +   "',"
-                    + usuarios.getEdad()           +   ",'"
-                    + usuarios.getCorreo()         +   "','"
-                    + usuarios.getUsuario()        +   "','"
-                    + usuarios.getClave()          +   "','"
-                    + usuarios.getAvatar()         +   "',"
+                    + usuarios.getIdentificacion() + ",'"
+                    + usuarios.getNombres() + "','"
+                    + usuarios.getApellidos() + "',"
+                    + usuarios.getEdad() + ",'"
+                    + usuarios.getCorreo() + "','"
+                    + usuarios.getUsuario() + "','"
+                    + usuarios.getClave() + "','"
+                    + usuarios.getAvatar() + "',"
                     + null + ","
-                    + usuarios.getId_distrito()    +   ","
-                    + usuarios.getId_rol()         +   ")";
-            
+                    + usuarios.getId_distrito() + ","
+                    + usuarios.getId_rol() + ")";
+
             AccesoBD.getConnection().ejecutarActualizacion(query);
         } catch (Exception ex) {
-            Logger.getLogger(IUsuariosDAO.class.getName()).log(Level.SEVERE, null, ex);   
+            Logger.getLogger(IUsuariosDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     @Override
     public Usuarios comprobarExisteUsuario(String usuario) {
-          
-            try {
-            query = "SELECT * FROM usuario WHERE usuario= '"+usuario+"'";
-            
+
+        try {
+            query = "SELECT * FROM usuario WHERE usuario= '" + usuario + "'";
+
             ResultSet rs = AccesoBD.getConnection().ejecutarQuery(query);
-            
-            if(rs.next()){
+
+            if (rs.next()) {
                 Usuarios user = new Usuarios(
                         rs.getInt("id_usuario"),
                         rs.getLong("identificacion"),
@@ -111,38 +110,71 @@ public class IMySqlUsuariosDAO implements IUsuariosDAO{
                         rs.getInt("id_distrito"),
                         rs.getInt("id_rol")
                 );
-                
+
                 return user;
-            }else{
+            } else {
                 return null;
             }
-            
+
         } catch (Exception ex) {
             Logger.getLogger(IMySqlUsuariosDAO.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
-                
-        
-    }
-        
 
+    }
+
+    @Override
+    public HashMap<Integer, Usuarios> listarUsuarios() {
+        HashMap<Integer, Usuarios> usuarios = new HashMap<Integer, Usuarios>();
+        ResultSet rs = null;
+        try {
+            rs = AccesoBD.getConnection().ejecutarQuery("SELECT * FROM usuario");
+            while (rs.next()) {
+                Usuarios user = new Usuarios(
+                        rs.getInt("id_usuario"),
+                        rs.getLong("identificacion"),
+                        rs.getString("nombres"),
+                        rs.getString("apellidos"),
+                        rs.getInt("edad"),
+                        rs.getString("correo"),
+                        rs.getString("usuario"),
+                        rs.getString("clave"),
+                        rs.getString("avatar"),
+                        rs.getInt("codigo_verificacion"),
+                        rs.getInt("id_distrito"),
+                        rs.getInt("id_rol")
+                );
+                usuarios.put(user.getId_usuario(), user);
+            }
+        } catch (Exception ex) {
+        }
+        return usuarios;
+    }
 
     @Override
     public boolean cambiarClave(int id_usuario, int clave) {
-        
+
         try {
-            query = "UPDATE usuario SET clave="+clave+" WHERE id_usuario="+id_usuario;
-            
+            query = "UPDATE usuario SET clave=" + clave + " WHERE id_usuario=" + id_usuario;
+
             AccesoBD.getConnection().ejecutarActualizacion(query);
-            
+
             return true;
         } catch (Exception ex) {
             return false;
             //Logger.getLogger(IMySqlUsuariosDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }
-            
-    
-    
+
+    @Override
+    public void eliminar(int id) {
+        try {
+            query = "DELETE FROM `usuario` WHERE = id_usuario" + id;
+            AccesoBD.getConnection().ejecutarActualizacion(query);
+        } catch (Exception ex) {
+            Logger.getLogger(IUsuariosDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
 }

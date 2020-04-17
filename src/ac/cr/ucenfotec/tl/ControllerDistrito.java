@@ -9,6 +9,7 @@ import ac.cr.ucenfotec.bl.distrito.Distrito;
 import ac.cr.ucenfotec.bl.distrito.IDistritoDAO;
 import ac.cr.ucenfotec.bl.factory.DaoFactory;
 import java.util.HashMap;
+
 /**
  *
  * @author Pardo
@@ -27,9 +28,15 @@ public class ControllerDistrito {
         dao.modificar(id, nombre, canton);
     }
 
-    public static HashMap<Integer, Distrito> listar(){
+    public static HashMap<Integer, Distrito> listar() {
         DaoFactory factory = DaoFactory.getDaoFactory(DaoFactory.MYSQL);
         IDistritoDAO dao = factory.getDistritoDAO();
         return dao.listar();
+    }
+
+    public static void eliminar(int id) {
+        DaoFactory factory = DaoFactory.getDaoFactory(DaoFactory.MYSQL);
+        IDistritoDAO dao = factory.getDistritoDAO();
+        dao.eliminar(id);
     }
 }

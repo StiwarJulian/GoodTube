@@ -18,7 +18,7 @@ public class mySQLTemaDAO implements ITemaDAO {
     @Override
     public void insertar(String nombre, String descripcion) {
         String query = "INSERT INTO `tema`(`id_tema`, `nombre`, `descripcion`)"
-                + " VALUES (null," + nombre + "," + descripcion + ")";
+                + " VALUES (null,'" + nombre + "','" + descripcion + "')";
         try {
             AccesoBD.getConnection().ejecutarActualizacion(query);
         } catch (Exception e) {

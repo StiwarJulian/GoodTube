@@ -73,6 +73,11 @@ public class Categoria {
         }
         return true;
     }
+
+    @Override
+    public String toString() {
+        return id+"," + nombre + "," + descripcion;
+    }
     
     
     

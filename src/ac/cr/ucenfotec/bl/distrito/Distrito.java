@@ -5,7 +5,6 @@
  */
 package ac.cr.ucenfotec.bl.distrito;
 
-
 /**
  *
  * @author Pardo
@@ -69,6 +68,11 @@ public class Distrito {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return id + "," + nombre + "," + canton;
     }
 
 }

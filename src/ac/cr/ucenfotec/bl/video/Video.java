@@ -12,7 +12,7 @@ import java.util.Date;
  * @author Pardo
  */
 public class Video {
-    
+
     private int id;
     private String nombre;
     private Date fecha;
@@ -21,6 +21,8 @@ public class Video {
     private int categoria;
     private int usuario;
     private double valor;
+
+    public static String[] CALIFICACIONES = {"Malo", "Bueno", "Muy Bueno"};
 
     public Video(int id, String nombre, Date fecha, String ruta, int calificacion, int categoria, int usuario, double valor) {
         this.id = id;
@@ -42,8 +44,6 @@ public class Video {
         this.usuario = usuario;
         this.valor = valor;
     }
-
-  
 
     @Override
     public boolean equals(Object obj) {
@@ -129,10 +129,7 @@ public class Video {
 
     @Override
     public String toString() {
-        return nombre + "," + fecha + "," + ruta + "," + calificacion + "," + categoria + "," + usuario + "," + valor;
+        return nombre + "," + fecha + "," + calificacion + "," + categoria + "," + usuario + "," + valor;
     }
 
-
-    
-    
 }

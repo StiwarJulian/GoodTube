@@ -10,6 +10,7 @@ package ac.cr.ucenfotec.bl.tema;
  * @author Pardo
  */
 public class Tema {
+
     private int id;
     private String nombre;
     private String descripcion;
@@ -73,7 +74,10 @@ public class Tema {
         }
         return true;
     }
-    
-    
-    
+
+    @Override
+    public String toString() {
+        return id + "," + nombre + "," + descripcion;
+    }
+
 }

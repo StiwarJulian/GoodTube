@@ -78,6 +78,11 @@ public class Canton {
         }
         return true;
     }
+
+    @Override
+    public String toString() {
+        return id + "," + nombre + "," + provincia;
+    }
     
     
 }

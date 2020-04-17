@@ -51,7 +51,7 @@ public class mySQLProvinciaDAO implements IProvinciaDAO {
         HashMap<Integer, Provincia> provincias = new HashMap<>();
         ResultSet rs = null;
         try {
-            rs = AccesoBD.getConnection().ejecutarQuery("SELECT * FROM Video");
+            rs = AccesoBD.getConnection().ejecutarQuery("SELECT * FROM provincia");
             while (rs.next()) {
                 Provincia provincia = new Provincia(rs.getInt(1), rs.getString(2));
                 provincias.put(provincia.getId(), provincia);

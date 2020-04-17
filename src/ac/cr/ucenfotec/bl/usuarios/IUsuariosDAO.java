@@ -5,6 +5,8 @@
  */
 package ac.cr.ucenfotec.bl.usuarios;
 
+import java.util.HashMap;
+
 public interface IUsuariosDAO {
     
     public Usuarios comprobarUsuario(String usuario, String clave);
@@ -16,6 +18,10 @@ public interface IUsuariosDAO {
     public Usuarios comprobarExisteUsuario(String usuario);
 
     public boolean cambiarClave(int id_usuario, int clave);
+    
+    public HashMap<Integer, Usuarios> listarUsuarios();
+
+    public void eliminar(int id);
 
     
 }
