@@ -34,7 +34,6 @@ public class UsuariosController {
     public void guardarUsuario(Usuarios usuario) {
         DaoFactory factory = DaoFactory.getDaoFactory(DaoFactory.MYSQL);
         IUsuariosDAO user = factory.getUsuariosDao();
-
         user.guardarUsuario(usuario);
     }
 

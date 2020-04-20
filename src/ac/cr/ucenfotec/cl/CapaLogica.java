@@ -1,5 +1,6 @@
 package ac.cr.ucenfotec.cl;
 
+import ac.cr.ucenfotec.Log;
 import ac.cr.ucenfotec.bl.administrador.Administrador;
 import ac.cr.ucenfotec.bl.canton.Canton;
 import ac.cr.ucenfotec.bl.categoria.Categoria;
@@ -632,7 +633,7 @@ public class CapaLogica {
             Files.copy(Paths.get(origen.getAbsolutePath()), Paths.get(destino.getAbsolutePath()),
                     StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException ex) {
-            Logger.getLogger(CapaLogica.class.getName()).log(Level.SEVERE, null, ex);
+           Log.writeLog(ex.toString());
         }
         return ".\\\\videos\\\\" + usuario + "\\\\" + nombre + ".mp4";
     }
@@ -715,7 +716,7 @@ public class CapaLogica {
             return ultimo_id_usuario + "/" + nombre;
 
         } catch (IOException ex) {
-            Logger.getLogger(CapaLogica.class.getName()).log(Level.SEVERE, null, ex);
+            Log.writeLog(ex.toString());
             return 1 + "/" + nombre;
         }
 
@@ -873,7 +874,7 @@ public class CapaLogica {
             Transport.send(message);
             return true;
         } catch (MessagingException mex) {
-            System.out.println(mex);
+            Log.writeLog(mex.toString());
             return false;
         }
 
@@ -1110,9 +1111,7 @@ public class CapaLogica {
         return usuarios.get(usuarioActual).getUsuario();
     }
 
-    public ArrayList<String[]> getReproduccionUsuario(int usuarioActual) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+
 
     public int getReproduccionVideo(int usuarioActual) {
         System.out.println(usuarioActual);

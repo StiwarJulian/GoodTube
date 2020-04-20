@@ -5,6 +5,7 @@
  */
 package ac.cr.ucenfotec.ui;
 
+import ac.cr.ucenfotec.Log;
 import ac.cr.ucenfotec.cl.CapaLogica;
 import com.jtattoo.plaf.mcwin.McWinLookAndFeel;
 import com.toedter.calendar.JDateChooser;
@@ -3196,7 +3197,7 @@ public class Main extends javax.swing.JFrame {
             usuario = txt_nombre_usuario.getText();
             clave = txt_claveUsuario.getText();
             avatar = (txt_rutaUsuario.getText().trim().length() != 0) ? txt_rutaUsuario.getText() : "";
-            distrito = cb_distritoUsuario.getSelectedIndex();
+            distrito = capaLogica.getDistrito(cb_distritoUsuario.getSelectedItem()+"");
 
             error_message = capa.validarCamposUsuario(identificacion, nombres, apellidos, edad, correo, usuario, clave, avatar, distrito);
 
@@ -3817,7 +3818,7 @@ public class Main extends javax.swing.JFrame {
              */
             UIManager.setLookAndFeel(new McWinLookAndFeel());
         } catch (UnsupportedLookAndFeelException ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            Log.writeLog(ex.toString());
         }
 
         //</editor-fold>
@@ -4132,7 +4133,7 @@ public class Main extends javax.swing.JFrame {
             jLabel20.setIcon(new ImageIcon(ImageIO.read(new File(avatar))));
             jLabel21.setIcon(new ImageIcon(ImageIO.read(new File(avatar))));
         } catch (IOException ex) {
-
+Log.writeLog(ex.toString());
         }
 
     }

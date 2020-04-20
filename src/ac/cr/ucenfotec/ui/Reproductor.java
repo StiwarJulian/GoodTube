@@ -5,6 +5,7 @@
  */
 package ac.cr.ucenfotec.ui;
 
+import ac.cr.ucenfotec.Log;
 import ac.cr.ucenfotec.cl.CapaLogica;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -88,6 +89,7 @@ public class Reproductor extends javax.swing.JFrame {
         } catch (Exception ex) {
             setVisible(false);
             Platform.exit();
+            Log.writeLog(ex.toString());
         }
 
     }
