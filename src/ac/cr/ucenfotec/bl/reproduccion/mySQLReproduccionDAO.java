@@ -21,7 +21,7 @@ public class mySQLReproduccionDAO implements IReproduccionDAO {
     @Override
     public void insertar(int tiempo, int usuario, int video) {
         String query = "INSERT INTO `reproduccion_actual`"
-                + "(`tiempo`, `id_usuario`, `id_video`) VALUES (null," + usuario + "," + video + ")";
+                + "(`tiempo`, `id_usuario`, `id_video`) VALUES (" + tiempo + "," + usuario + "," + video + ")";
         try {
             AccesoBD.getConnection().ejecutarActualizacion(query);
         } catch (Exception e) {
@@ -48,8 +48,8 @@ public class mySQLReproduccionDAO implements IReproduccionDAO {
             while (rs.next()) {
                 Reproduccion reproduccion = new Reproduccion(rs.getInt(1),
                         rs.getInt(2), rs.getInt(3));
-                reproducciones.put(Integer.parseInt(reproduccion.getVideo()+""
-                        + ""+reproduccion.getUsuario()), reproduccion);
+                reproducciones.put(Integer.parseInt(reproduccion.getVideo() + ""
+                        + "" + reproduccion.getUsuario()), reproduccion);
             }
         } catch (Exception ex) {
         }

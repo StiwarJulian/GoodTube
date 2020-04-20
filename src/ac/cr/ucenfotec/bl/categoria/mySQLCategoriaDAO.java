@@ -39,7 +39,7 @@ public class mySQLCategoriaDAO implements ICategoriaDAO {
 
     @Override
     public void eliminar(int id) {
-        String query = "DELETE FROM `categoria` WHERE WHERE  `id_categoria`=" + id;
+        String query = "DELETE FROM `categoria` WHERE  `id_categoria`=" + id;
         try {
             AccesoBD.getConnection().ejecutarActualizacion(query);
         } catch (Exception e) {

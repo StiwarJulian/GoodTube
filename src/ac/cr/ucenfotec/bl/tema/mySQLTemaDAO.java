@@ -39,7 +39,7 @@ public class mySQLTemaDAO implements ITemaDAO {
 
     @Override
     public void eliminar(int id) {
-        String query = "DELETE FROM `tema` WHERE `id_categoria`=" + id;
+        String query = "DELETE FROM `tema` WHERE `id_tema`=" + id;
         try {
             AccesoBD.getConnection().ejecutarActualizacion(query);
         } catch (Exception e) {

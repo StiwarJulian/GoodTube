@@ -28,7 +28,7 @@ public class mySQLDistritoDAO implements IDistritoDAO {
 
     @Override
     public void modificar(int id, String nombre, int canton) {
-        String query = "UPDATE `canton` SET `nombre`=" + nombre + ","
+        String query = "UPDATE `distrito` SET `nombre`=" + nombre + ","
                 + "`id_canton`=" + canton + " WHERE `id_distrito`=" + id;
         try {
             AccesoBD.getConnection().ejecutarActualizacion(query);

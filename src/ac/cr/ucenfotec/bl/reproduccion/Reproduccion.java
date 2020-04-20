@@ -28,9 +28,6 @@ public class Reproduccion {
         return tiempo;
     }
 
-    public void setTiempo(int tiempo) {
-        this.tiempo = tiempo;
-    }
 
     public int getUsuario() {
         return usuario;
@@ -46,6 +43,11 @@ public class Reproduccion {
 
     public void setVideo(int video) {
         this.video = video;
+    }
+
+    @Override
+    public String toString() {
+        return "Reproduccion{" + "tiempo=" + tiempo + ", usuario=" + usuario + ", video=" + video + '}';
     }
 
     

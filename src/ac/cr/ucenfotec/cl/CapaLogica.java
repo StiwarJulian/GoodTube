@@ -76,37 +76,31 @@ public class CapaLogica {
 
     public void agregarVideo(String nombre, Date fecha, String ruta, int calificacion, int categoria, int usuario, double valor) {
         ControllerVideo.registrar(nombre, fecha, ruta, calificacion, categoria, usuario, valor);
-        int id = (videos.size() > 0) ? Collections.max(videos.keySet()) : 0;
-        videos.put(id + 1, new Video(id + 1, nombre, fecha, ruta, calificacion, categoria, usuario, valor));
+        videos = ControllerVideo.listar();
     }
 
     public void ModificarVideo(int id, String nombre, Date fecha, String ruta, int calificacion, int categoria, int usuario, double valor) {
         ControllerVideo.modificar(id, nombre, fecha, ruta, calificacion, categoria, usuario, valor);
-        videos.replace(id, new Video(id, nombre, fecha, ruta, calificacion, categoria, usuario, valor));
+        videos = ControllerVideo.listar();
     }
 
     public void agregarCategoria(String nombre, String descripcion) {
         ControllerCategoria.registrar(nombre, descripcion);
-        int id = Collections.max(categorias.keySet());
-        categorias.put(id + 1, new Categoria(id + 1, nombre, descripcion));
+        categorias = ControllerCategoria.listar();
     }
 
     public void agregarReproduccion(int tiempo, int usuario, int video) {
         ControllerReproduccion.registrar(tiempo, usuario, video);
-        reproduccion.put(Integer.parseInt(video + "" + usuario), new Reproduccion(tiempo, usuario, video));
+        reproduccion = ControllerReproduccion.listar();
     }
 
     public void eliminarReproduccion(int usuario) {
         ControllerReproduccion.eliminar(usuario);
-        for (Reproduccion reproduccio : reproduccion.values()) {
-            if (reproduccio.getUsuario() == usuario) {
-                reproduccion.remove(Integer.parseInt(reproduccio.getVideo() + "" + reproduccio.getUsuario()));
-            }
-        }
+        reproduccion = ControllerReproduccion.listar();
     }
 
     public ArrayList<Integer> getReproduccionesVideos(int usuario) {
-        ArrayList<Integer> videos = new  ArrayList<>();
+        ArrayList<Integer> videos = new ArrayList<>();
         for (Reproduccion reproduccio : reproduccion.values()) {
             if (reproduccio.getUsuario() == usuario) {
                 videos.add(reproduccio.getVideo());
@@ -117,17 +111,16 @@ public class CapaLogica {
 
     public void agregarTema(String nombre, String descripcion) {
         ControllerTema.registrar(nombre, descripcion);
-        int id = (temas.size() > 0) ? Collections.max(temas.keySet()) : 0;
-        temas.put(id + 1, new Tema(id + 1, nombre, descripcion));
+        temas = ControllerTema.listar();
     }
 
     public void agregarLista(String nombre, Date fecha, int usuario, int tema, ArrayList<Integer> videos) {
         ControllerListaReproduccion.registrar(nombre, fecha, usuario, tema);
-        listas = ControllerListaReproduccion.listar();
         int id = getLista(nombre);
         for (Integer video : videos) {
             ControllerListaReproduccion.agregarVideo(id, video);
         }
+        listas = ControllerListaReproduccion.listar();
     }
 
     public int getLista(String nombre) {
@@ -142,13 +135,13 @@ public class CapaLogica {
     public void agregarOpcion(String color, String vista, int usuario) {
         eliminarOpcion(usuario);
         ControllerOpciones.registrar(color, vista, usuario);
-        int id = (opciones.size() > 0) ? Collections.max(listas.keySet()) : 0;
-        opciones.put(id + 1, new Opciones(color, vista, usuario));
+        opciones = ControllerOpciones.listar();
     }
 
     public void eliminarOpcion(int id) {
         opciones.remove(id);
         ControllerOpciones.eliminar(id);
+        opciones = ControllerOpciones.listar();
     }
 
     public void modificarLista(int id, String nombre, Date fecha, int usuario, int tema, ArrayList<Integer> videos) {
@@ -165,45 +158,42 @@ public class CapaLogica {
 
     public void modificarTema(int id, String nombre, String descripcion) {
         ControllerTema.modificar(id, nombre, descripcion);
-        categorias.replace(id, new Categoria(id, nombre, descripcion));
+        temas = ControllerTema.listar();
     }
 
     public void agregarProvincia(String nombre) {
         ControllerProvincia.registrar(nombre);
-        int id = (provincias.size() > 0) ? Collections.max(provincias.keySet()) : 0;
-        provincias.put(id + 1, new Provincia(id + 1, nombre));
+        provincias = ControllerProvincia.listar();
     }
 
     public void modificarProvincia(int id, String nombre) {
         ControllerProvincia.modificar(id, nombre);
-        provincias.replace(id, new Provincia(id, nombre));
+        provincias = ControllerProvincia.listar();
     }
 
     public void agregarCanton(String nombre, int provincia) {
         ControllerCanton.registrar(nombre, provincia);
-        int id = (cantones.size() > 0) ? Collections.max(cantones.keySet()) : 0;
-        cantones.put(id + 1, new Canton(id + 1, nombre, provincia));
+        cantones = ControllerCanton.listar();
     }
 
     public void modificarCanton(int id, String nombre, int provincia) {
         ControllerCanton.modificar(id, nombre, provincia);
-        cantones.replace(id, new Canton(id, nombre, provincia));
+        cantones = ControllerCanton.listar();
     }
 
     public void agregarDistrito(String nombre, int canton) {
         ControllerDistrito.registrar(nombre, canton);
-        int id = (distritos.size() > 0) ? Collections.max(distritos.keySet()) : 0;
-        distritos.put(id + 1, new Distrito(id + 1, nombre, canton));
+        distritos = ControllerDistrito.listar();
     }
 
     public void modificarDistrito(int id, String nombre, int canton) {
         ControllerDistrito.modificar(id, nombre, canton);
-        distritos.replace(id, new Distrito(id, nombre, canton));
+        distritos = ControllerDistrito.listar();
     }
 
     public void modificarCategoria(int id, String nombre, String descripcion) {
         ControllerCategoria.modificar(id, nombre, descripcion);
-        categorias.replace(id, new Categoria(id, nombre, descripcion));
+        categorias = ControllerCategoria.listar();
     }
 
     public int getCategoria(String nombre) {
@@ -356,15 +346,42 @@ public class CapaLogica {
         return nombres.toArray(new String[i]);
     }
 
-    public ArrayList<String[]> getVideosUsuario(int usuario) {
+    public int getUsuario(String usuario) {
+        for (Usuarios user : usuarios.values()) {
+            if (user.getUsuario().equals(usuario)) {
+                return user.getId_usuario();
+            }
+        }
+        return -1;
+    }
+
+    public ArrayList<String[]> getVideosUsuario(String usuario) {
         ArrayList<String[]> datos = new ArrayList<>();
+        int id = getUsuario(usuario);
         for (Video video : videos.values()) {
-            if (video.getUsuario() == (usuario)) {
+            if (video.getUsuario() == (id)) {
                 String[] fila = videos.toString().split(",");
                 fila[0] = video.getNombre();
                 fila[1] = video.getFecha().toString();
                 fila[2] = categorias.get(video.getCategoria()).getNombre();
-                fila[3] = usuarios.get(video.getUsuario()).getNombres();
+                fila[3] = usuarios.get(video.getUsuario()).getUsuario();
+                fila[4] = video.getValor() + "$";
+                fila[5] = Video.CALIFICACIONES[video.getCalificacion() - 1];
+                datos.add(fila);
+            }
+        }
+        return datos;
+    }
+
+    public ArrayList<String[]> getVideosUsuario(int id) {
+        ArrayList<String[]> datos = new ArrayList<>();
+        for (Video video : videos.values()) {
+            if (video.getUsuario() == (id)) {
+                String[] fila = videos.toString().split(",");
+                fila[0] = video.getNombre();
+                fila[1] = video.getFecha().toString();
+                fila[2] = categorias.get(video.getCategoria()).getNombre();
+                fila[3] = usuarios.get(video.getUsuario()).getUsuario();
                 fila[4] = video.getValor() + "$";
                 fila[5] = Video.CALIFICACIONES[video.getCalificacion() - 1];
                 datos.add(fila);
@@ -381,7 +398,7 @@ public class CapaLogica {
                 fila[0] = video.getNombre();
                 fila[1] = video.getFecha().toString();
                 fila[2] = categorias.get(video.getCategoria()).getNombre();
-                fila[3] = usuarios.get(video.getUsuario()).getNombres();
+                fila[3] = usuarios.get(video.getUsuario()).getUsuario();
                 fila[4] = video.getValor() + "$";
                 fila[5] = Video.CALIFICACIONES[video.getCalificacion() - 1];
                 datos.add(fila);
@@ -398,7 +415,7 @@ public class CapaLogica {
                 fila[0] = video.getNombre();
                 fila[1] = video.getFecha().toString();
                 fila[2] = categorias.get(video.getCategoria()).getNombre();
-                fila[3] = usuarios.get(video.getUsuario()).getNombres();
+                fila[3] = usuarios.get(video.getUsuario()).getUsuario();
                 fila[4] = video.getValor() + "$";
                 fila[5] = Video.CALIFICACIONES[video.getCalificacion() - 1];
                 datos.add(fila);
@@ -415,7 +432,7 @@ public class CapaLogica {
                 fila[0] = video.getNombre();
                 fila[1] = video.getFecha().toString();
                 fila[2] = categorias.get(video.getCategoria()).getNombre();
-                fila[3] = usuarios.get(video.getUsuario()).getNombres();
+                fila[3] = usuarios.get(video.getUsuario()).getUsuario();
                 fila[4] = video.getValor() + "$";
                 fila[5] = Video.CALIFICACIONES[video.getCalificacion() - 1];
                 datos.add(fila);
@@ -428,12 +445,12 @@ public class CapaLogica {
         ArrayList<String[]> datos = new ArrayList<>();
         int id = getCategoria(categoria);
         for (Video video : videos.values()) {
-            if ((video.getCategoria() + "").equals(id)) {
+            if (video.getCategoria()  == (id)) {
                 String[] fila = videos.toString().split(",");
                 fila[0] = video.getNombre();
                 fila[1] = video.getFecha().toString();
                 fila[2] = categorias.get(video.getCategoria()).getNombre();
-                fila[3] = usuarios.get(video.getUsuario()).getNombres();
+                fila[3] = usuarios.get(video.getUsuario()).getUsuario();
                 fila[4] = video.getValor() + "$";
                 fila[5] = Video.CALIFICACIONES[video.getCalificacion() - 1];
                 datos.add(fila);
@@ -450,7 +467,7 @@ public class CapaLogica {
                 fila[0] = video.getNombre();
                 fila[1] = video.getFecha().toString();
                 fila[2] = categorias.get(video.getCategoria()).getNombre();
-                fila[3] = usuarios.get(video.getUsuario()).getNombres();
+                fila[3] = usuarios.get(video.getUsuario()).getUsuario();
                 fila[4] = video.getValor() + "$";
                 fila[5] = Video.CALIFICACIONES[video.getCalificacion() - 1];
                 datos.add(fila);
@@ -595,7 +612,7 @@ public class CapaLogica {
             fila[0] = video.getNombre();
             fila[1] = video.getFecha().toString();
             fila[2] = categorias.get(video.getCategoria()).getNombre();
-            fila[3] = usuarios.get(video.getUsuario()).getNombres();
+            fila[3] = usuarios.get(video.getUsuario()).getUsuario();
             fila[4] = video.getValor() + "$";
             fila[5] = Video.CALIFICACIONES[video.getCalificacion() - 1];
             datos.add(fila);
@@ -609,7 +626,7 @@ public class CapaLogica {
 
     public String copiarVideo(String ruta, String usuario, String nombre) {
         File origen = new File(ruta);
-        File destino = new File(".\\videos\\" + usuario + "\\" + nombre + ".mov");
+        File destino = new File(".\\videos\\" + usuario + "\\" + nombre + ".mp4");
         try {
             destino.getParentFile().mkdirs();
             Files.copy(Paths.get(origen.getAbsolutePath()), Paths.get(destino.getAbsolutePath()),
@@ -617,7 +634,7 @@ public class CapaLogica {
         } catch (IOException ex) {
             Logger.getLogger(CapaLogica.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return ".\\\\videos\\\\" + usuario + "\\\\" + nombre + ".mov";
+        return ".\\\\videos\\\\" + usuario + "\\\\" + nombre + ".mp4";
     }
 
     // ADMINISTRADOR
@@ -976,11 +993,11 @@ public class CapaLogica {
     }
 
     public void eliminarVideo(String id) {
-        ControllerVideo.eliminar(id);
         eliminarArchivoVideo(new File(videos.get(Integer.parseInt(id)).getRuta()));
-        videos.remove(Integer.parseInt(id));
         eliminarReproduccionVideo(Integer.parseInt(id));
         eliminarListaVideo(Integer.parseInt(id));
+        ControllerVideo.eliminar(id);
+        videos = ControllerVideo.listar();
     }
 
     private void eliminarListaVideo(int video) {
@@ -1008,7 +1025,7 @@ public class CapaLogica {
             ControllerListaReproduccion.eliminarVideo(id, video);
         }
         ControllerListaReproduccion.eliminar(id);
-        listas.remove(id);
+        listas = ControllerListaReproduccion.listar();
     }
 
     public void comprarVideo(int usuario, int video) {
@@ -1022,8 +1039,8 @@ public class CapaLogica {
         file.delete();
     }
 
-    public long getReproduccionTiempo(int videoActual) {
-        long tiempo = 0;
+    public int getReproduccionTiempo(int videoActual) {
+        int tiempo = 0;
         if (reproduccion.get(videoActual) != null) {
             tiempo = reproduccion.get(videoActual).getTiempo();
         }
@@ -1040,13 +1057,9 @@ public class CapaLogica {
     }
 
     public void eliminarDistrito(int id) {
-        for (Usuarios usuari : usuarios.values()) {
-            if (usuari.getId_distrito() == id) {
-                eliminarUsuario(usuari.getId_usuario());
-            }
-        }
+
         ControllerDistrito.eliminar(id);
-        distritos.remove(id);
+        distritos = ControllerDistrito.listar();
     }
 
     public void eliminarCanton(int id) {
@@ -1056,22 +1069,7 @@ public class CapaLogica {
             }
         }
         ControllerCanton.eliminar(id);
-        cantones.remove(id);
-    }
-
-    private void eliminarUsuario(int id) {
-        for (Video video : videos.values()) {
-            if (video.getUsuario() == id) {
-                eliminarVideo(video.getId() + "");
-            }
-        }
-        for (ListaReproduccion lista : listas.values()) {
-            if (lista.getUsuario() == id) {
-                eliminarLista(lista.getId());
-            }
-        }
-        UsuariosController.eliminar(id);
-        usuarios.remove(id);
+        cantones = ControllerCanton.listar();
     }
 
     public void eliminarProvincia(int id) {
@@ -1081,7 +1079,7 @@ public class CapaLogica {
             }
         }
         ControllerProvincia.eliminar(id);
-        provincias.remove(id);
+        provincias = ControllerProvincia.listar();
     }
 
     public void eliminarCategoria(int id) {
@@ -1091,17 +1089,17 @@ public class CapaLogica {
             }
         }
         ControllerCategoria.eliminar(id);
-        categorias.remove(id);
+        categorias = ControllerCategoria.listar();
     }
 
     public void eliminarTema(int id) {
         for (ListaReproduccion lista : listas.values()) {
             if (lista.getTema() == id) {
-                eliminarLista(id);
+                eliminarLista(lista.getId());
             }
         }
         ControllerTema.eliminar(id);
-        temas.remove(id);
+        temas = ControllerTema.listar();
     }
 
     public String getUsuarioAvatar(int usuarioActual) {
@@ -1117,8 +1115,9 @@ public class CapaLogica {
     }
 
     public int getReproduccionVideo(int usuarioActual) {
-        for(Reproduccion reproducc: reproduccion.values()){
-            if(reproducc.getUsuario() == usuarioActual && reproducc.getTiempo() != 0){
+        System.out.println(usuarioActual);
+        for (Reproduccion reproducc : reproduccion.values()) {
+            if (reproducc.getUsuario() == usuarioActual && reproducc.getTiempo() != 0) {
                 return reproducc.getVideo();
             }
         }

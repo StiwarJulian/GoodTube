@@ -32,6 +32,15 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
+import java.awt.BorderLayout;
+import java.io.File;
+import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 
 /**
  *
@@ -46,7 +55,6 @@ public class Main extends javax.swing.JFrame {
      */
     public Main() {
         initComponents();
-
     }
 
     void llenar() {
@@ -58,6 +66,7 @@ public class Main extends javax.swing.JFrame {
         llenarTablaVideoTienda();
         llenarTablaVideoUsuario();
         llenarTablaListas();
+
     }
 
     /**
@@ -1530,6 +1539,8 @@ public class Main extends javax.swing.JFrame {
 
         jLabel75.setText("Canton : ");
 
+        jTextFieldIdModificarDistrito.setEditable(false);
+
         jLabel85.setText("Id : ");
 
         javax.swing.GroupLayout jFrameModificarDistritoLayout = new javax.swing.GroupLayout(jFrameModificarDistrito.getContentPane());
@@ -2328,10 +2339,8 @@ public class Main extends javax.swing.JFrame {
                     .addContainerGap()
                     .addGroup(jPanelAdministradorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jLabel21)
-                        .addGroup(jPanelAdministradorLayout.createSequentialGroup()
-                            .addComponent(jButton10)
-                            .addGap(0, 0, Short.MAX_VALUE)))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton10))
+                    .addGap(0, 0, Short.MAX_VALUE)
                     .addComponent(jTabbedPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 421, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap()))
         );
@@ -2694,10 +2703,8 @@ public class Main extends javax.swing.JFrame {
                     .addContainerGap()
                     .addGroup(jPanelUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jLabel20)
-                        .addGroup(jPanelUsuarioLayout.createSequentialGroup()
-                            .addComponent(jButton9)
-                            .addGap(0, 0, Short.MAX_VALUE)))
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton9))
+                    .addGap(0, 0, Short.MAX_VALUE)
                     .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 421, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap()))
         );
@@ -2850,11 +2857,12 @@ public class Main extends javax.swing.JFrame {
 
     private void jButtonEditarCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditarCategoriaActionPerformed
         int id = Integer.parseInt(jTextFieldIdEditarCategoria.getText());
-        String nombre = jTextFieldNombreGuardarCategoria.getText();
-        String descripcion = jTextAreaDescripcionGuardarCategoria.getText();
+        String nombre = jTextFieldNombreEditarCategoria.getText();
+        String descripcion = jTextAreaDescripcionEditarCategoria.getText();
         if (nombre.length() != 0 && descripcion.length() != 0) {
             capaLogica.modificarCategoria(id, nombre, descripcion);
             llenarTablaCategorias();
+            jFrameModificarCategoria.dispose();
         }
     }//GEN-LAST:event_jButtonEditarCategoriaActionPerformed
 
@@ -2877,7 +2885,7 @@ public class Main extends javax.swing.JFrame {
     private void jButtonSeleccionarRutaRegistrarVideoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSeleccionarRutaRegistrarVideoActionPerformed
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-        fileChooser.setFileFilter(new FileNameExtensionFilter("Videos", "mov"));
+        fileChooser.setFileFilter(new FileNameExtensionFilter("Videos", "mp4"));
         int result = fileChooser.showOpenDialog(this);
         if (result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
@@ -2918,7 +2926,7 @@ public class Main extends javax.swing.JFrame {
     private void jButtonModificarCantonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonModificarCantonActionPerformed
         int id = Integer.parseInt(jTextFieldIdModificarCanton.getText());
         String nombre = jTextFieldNombreModificarCanton.getText();
-        int provincia = capaLogica.getProvincia(jComboBoxProvinciaRegistrarCanton.getSelectedItem() + "");
+        int provincia = capaLogica.getProvincia(jComboBoxProvinciaModificarCanton.getSelectedItem() + "");
         if (nombre.length() != 0 && provincia != -1) {
             capaLogica.modificarCanton(id, nombre, provincia);
             jFrameModificarCanton.dispose();
@@ -2957,7 +2965,7 @@ public class Main extends javax.swing.JFrame {
 
     private void jButton25ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton25ActionPerformed
         if (jTableDistritos.getSelectedRow() != -1) {
-            int id = capaLogica.getDistrito(jTableDistritos.getValueAt(jTableDistritos.getSelectedRow(), 0) + "");
+            int id = Integer.parseInt(jTableDistritos.getValueAt(jTableDistritos.getSelectedRow(), 0) + "");
             jTextFieldIdModificarDistrito.setText(id + "");
             jFrameModificarDistrito.setVisible(true);
             jFrameModificarDistrito.setLocationRelativeTo(this);
@@ -2975,7 +2983,7 @@ public class Main extends javax.swing.JFrame {
     private void jButton27ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton27ActionPerformed
 
         if (jTableCantones.getSelectedRow() != -1) {
-            int id = capaLogica.getCanton(jTableCantones.getValueAt(jTableCantones.getSelectedRow(), 0) + "");
+            int id = Integer.parseInt(jTableCantones.getValueAt(jTableCantones.getSelectedRow(), 0) + "");
             jTextFieldIdModificarCanton.setText(id + "");
             jFrameModificarCanton.setVisible(true);
             jFrameModificarCanton.setLocationRelativeTo(this);
@@ -2992,7 +3000,7 @@ public class Main extends javax.swing.JFrame {
 
     private void jButton31ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton31ActionPerformed
         if (jTableProvincias.getSelectedRow() != -1) {
-            int id = capaLogica.getProvincia(jTableCantones.getValueAt(jTableCantones.getSelectedRow(), 0) + "");
+            int id = Integer.parseInt(jTableProvincias.getValueAt(jTableProvincias.getSelectedRow(), 0) + "");
             jTextFieldIdModificarProvincia.setText(id + "");
             jFrameModificarProvincia.setVisible(true);
             jFrameModificarProvincia.setLocationRelativeTo(this);
@@ -3007,7 +3015,7 @@ public class Main extends javax.swing.JFrame {
 
     private void jButton35ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton35ActionPerformed
         if (jTableCategorias.getSelectedRow() != -1) {
-            int id = capaLogica.getCategoria(jTableCategorias.getValueAt(jTableCategorias.getSelectedRow(), 0) + "");
+            int id = Integer.parseInt(jTableCategorias.getValueAt(jTableCategorias.getSelectedRow(), 0) + "");
             jTextFieldIdEditarCategoria.setText(id + "");
             jFrameModificarCategoria.setVisible(true);
             jFrameModificarCategoria.setLocationRelativeTo(this);
@@ -3023,7 +3031,7 @@ public class Main extends javax.swing.JFrame {
 
     private void jButton39ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton39ActionPerformed
         if (jTableTemas.getSelectedRow() != -1) {
-            int id = capaLogica.getTema(jTableTemas.getValueAt(jTableTemas.getSelectedRow(), 0) + "");
+            int id = Integer.parseInt(jTableTemas.getValueAt(jTableTemas.getSelectedRow(), 0) + "");
             jTextField38.setText(id + "");
             jFrameModificarTemas.setVisible(true);
             jFrameModificarTemas.setLocationRelativeTo(this);
@@ -3035,6 +3043,8 @@ public class Main extends javax.swing.JFrame {
         String descripcion = jTextAreaDescripcionGuardarTema.getText();
         if (nombre.length() != 0 && descripcion.length() != 0) {
             capaLogica.agregarTema(nombre, descripcion);
+            jFrameRegistrarTemas.dispose();
+            llenarTablaTemas();
         }
     }//GEN-LAST:event_jButton16ActionPerformed
 
@@ -3044,7 +3054,10 @@ public class Main extends javax.swing.JFrame {
         String descripcion = jTextArea4.getText();
         if (nombre.length() != 0 && descripcion.length() != 0) {
             capaLogica.modificarTema(id, nombre, descripcion);
+            jFrameModificarTemas.dispose();
+            llenarTablaTemas();
         }
+
     }//GEN-LAST:event_jButton67ActionPerformed
 
     private void jButton52ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton52ActionPerformed
@@ -3069,7 +3082,7 @@ public class Main extends javax.swing.JFrame {
                     datos = capaLogica.getVideosCategoria(busqueda);
                     break;
                 case 4:
-                    datos = capaLogica.getVideosUsuario(Integer.parseInt(busqueda));
+                    datos = capaLogica.getVideosUsuario(busqueda);
                     break;
                 case 5:
                     datos = capaLogica.getVideosValor(busqueda);
@@ -3430,18 +3443,11 @@ public class Main extends javax.swing.JFrame {
             int id = capaLogica.getVideo(jTableReproduccion.getValueAt(jTableReproduccion.getSelectedRow(), 0) + "");
             File file = new File(capaLogica.getVideoRuta(id + ""));
             ArrayList<Integer> videos = new ArrayList<>();
-            for (int i = 0; i < jTableReproduccion.getRowCount() && i != jTableReproduccion.getSelectedRow(); i++) {
+            for (int i = 0; i < jTableReproduccion.getRowCount(); i++) {
                 videos.add(capaLogica.getVideo(jTableReproduccion
-                        .getValueAt(jTableReproduccion.getSelectedRow(), 0) + ""));
-
+                        .getValueAt(i, 0) + ""));
             }
-            Player player_obj = new Player(file, capaLogica, id, videos);
-            player_obj.setVisible(true);
-            player_obj.player_gui();
-            player_obj.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            player_obj.setBackground(Color.pink);
-            player_obj.setLocation(300, 300);
-            player_obj.setSize(500, 100);
+            new Reproductor(file, capaLogica, id, videos);
         }
     }//GEN-LAST:event_jButton53ActionPerformed
 
@@ -3526,7 +3532,8 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton50ActionPerformed
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
-        // TODO add your handling code here:
+        jFrameOpciones.setVisible(true);
+        jFrameOpciones.setLocationRelativeTo(this);
     }//GEN-LAST:event_jButton10ActionPerformed
 
     private void jButtonModificarListaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonModificarListaActionPerformed
@@ -3571,13 +3578,8 @@ public class Main extends javax.swing.JFrame {
         if (jTableVideosUsuario.getSelectedRow() != -1) {
             int id = capaLogica.getVideo(jTableVideosUsuario.getValueAt(jTableVideosUsuario.getSelectedRow(), 0) + "");
             File file = new File(capaLogica.getVideoRuta(id + ""));
-            Player player_obj = new Player(file, capaLogica, id, new ArrayList<Integer>());
-            player_obj.setVisible(true);
-            player_obj.player_gui();
-            player_obj.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            player_obj.setBackground(Color.pink);
-            player_obj.setLocation(300, 300);
-            player_obj.setSize(500, 100);
+            new Reproductor(file, capaLogica, id, new ArrayList<Integer>());
+
         }
     }//GEN-LAST:event_jButton46ActionPerformed
 
@@ -3610,7 +3612,6 @@ public class Main extends javax.swing.JFrame {
         if (jTableVideosUsuario.getSelectedRow() != -1 && comprobarEliminacion()) {
             String id = capaLogica.getVideo(jTableVideosUsuario.getValueAt(jTableVideosUsuario.getSelectedRow(), 0) + "") + "";
             capaLogica.eliminarVideo(id + "");
-            System.out.println(id);
             llenarTablaVideoUsuario();
             llenarTablaVideoTienda();
         }
@@ -3643,7 +3644,7 @@ public class Main extends javax.swing.JFrame {
 
     private void jButton23ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton23ActionPerformed
         if (jTableDistritos.getSelectedRow() != -1 && comprobarEliminacion()) {
-            int id = capaLogica.getDistrito(jTableDistritos.getValueAt(jTableDistritos.getSelectedRow(), 0) + "");
+            int id = Integer.parseInt(jTableDistritos.getValueAt(jTableDistritos.getSelectedRow(), 0) + "");
             capaLogica.eliminarDistrito(id);
             llenarTablaDistritos();
         }
@@ -3651,7 +3652,7 @@ public class Main extends javax.swing.JFrame {
 
     private void jButton26ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton26ActionPerformed
         if (jTableCantones.getSelectedRow() != -1 && comprobarEliminacion()) {
-            int id = capaLogica.getCanton(jTableCantones.getValueAt(jTableCantones.getSelectedRow(), 0) + "");
+            int id = Integer.parseInt(jTableCantones.getValueAt(jTableCantones.getSelectedRow(), 0) + "");
             capaLogica.eliminarCanton(id);
             llenarTablaCantones();
             llenarTablaDistritos();
@@ -3660,7 +3661,7 @@ public class Main extends javax.swing.JFrame {
 
     private void jButton30ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton30ActionPerformed
         if (jTableProvincias.getSelectedRow() != -1 && comprobarEliminacion()) {
-            int id = capaLogica.getProvincia(jTableCantones.getValueAt(jTableCantones.getSelectedRow(), 0) + "");
+            int id = Integer.parseInt(jTableProvincias.getValueAt(jTableProvincias.getSelectedRow(), 0) + "");
             capaLogica.eliminarProvincia(id);
             llenarTablaCantones();
             llenarTablaDistritos();
@@ -3670,7 +3671,7 @@ public class Main extends javax.swing.JFrame {
 
     private void jButton34ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton34ActionPerformed
         if (jTableCategorias.getSelectedRow() != -1 && comprobarEliminacion()) {
-            int id = capaLogica.getCategoria(jTableCategorias.getValueAt(jTableCategorias.getSelectedRow(), 0) + "");
+            int id = Integer.parseInt(jTableCategorias.getValueAt(jTableCategorias.getSelectedRow(), 0) + "");
             capaLogica.eliminarCategoria(id);
             llenarTablaCategorias();
         }
@@ -3678,7 +3679,7 @@ public class Main extends javax.swing.JFrame {
 
     private void jButton38ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton38ActionPerformed
         if (jTableTemas.getSelectedRow() != -1 && comprobarEliminacion()) {
-            int id = capaLogica.getTema(jTableTemas.getValueAt(jTableTemas.getSelectedRow(), 0) + "");
+            int id = Integer.parseInt(jTableTemas.getValueAt(jTableTemas.getSelectedRow(), 0) + "");
             capaLogica.eliminarTema(id);
             llenarTablaTemas();
         }
@@ -3719,7 +3720,6 @@ public class Main extends javax.swing.JFrame {
                 DefaultListModel modelo = (DefaultListModel) ((JList) componente).getModel();
                 modelo.clear();
                 modelo.setSize(0);
-                System.out.println("aaaa");
             }
         }
     }
@@ -3822,28 +3822,22 @@ public class Main extends javax.swing.JFrame {
 
         //</editor-fold>
         //</editor-fold>
+        Main main = new Main();
+        main.jFrameLogin.setLocationRelativeTo(main);
+        main.jFrameLogin.setVisible(true);
+        boolean adminExiste = new CapaLogica().verificarExisteUsuarioAdministrador();
+        if (!adminExiste) {
+            JOptionPane.showMessageDialog(main, "El administrador no existe, por favor registre uno", "Administrador", JOptionPane.ERROR_MESSAGE);
+            main.jFrameLogin.dispose();
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> {
-            Main main = new Main();
-            main.jFrameLogin.setLocationRelativeTo(main);
-            main.jFrameLogin.setVisible(true);
-            boolean adminExiste = new CapaLogica().verificarExisteUsuarioAdministrador();
+            main.jFrameRegistrarAdministrador.setSize(600, 400);
+            main.jFrameRegistrarAdministrador.setLocationRelativeTo(main);
 
-            if (!adminExiste) {
-                JOptionPane.showMessageDialog(main, "El administrador no existe, por favor registre uno", "Administrador", JOptionPane.ERROR_MESSAGE);
-                main.jFrameLogin.dispose();
+            main.jFrameRegistrarAdministrador.setVisible(true);
+            main.txt_ruta.setVisible(false);
 
-                main.jFrameRegistrarAdministrador.setSize(600, 400);
-                main.jFrameRegistrarAdministrador.setLocationRelativeTo(main);
-
-                main.jFrameRegistrarAdministrador.setVisible(true);
-                main.txt_ruta.setVisible(false);
-            }
-        });
-
+        }
     }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_avatarAdministrador;
     private javax.swing.JButton btn_avatarUsuario;
@@ -4135,7 +4129,6 @@ public class Main extends javax.swing.JFrame {
             jLabel21.setText(capaLogica.getUsuarioNombre(capaLogica.getUsuarioActual()));
 
             String avatar = capaLogica.getUsuarioAvatar(capaLogica.getUsuarioActual());
-            System.out.println(avatar);
             jLabel20.setIcon(new ImageIcon(ImageIO.read(new File(avatar))));
             jLabel21.setIcon(new ImageIcon(ImageIO.read(new File(avatar))));
         } catch (IOException ex) {
@@ -4159,13 +4152,11 @@ public class Main extends javax.swing.JFrame {
             }
             int id = capaLogica.getReproduccionVideo(capaLogica.getUsuarioActual());
             File file = new File(capaLogica.getVideoRuta(id + ""));
-            Player player_obj = new Player(file, capaLogica, id, videos);
-            player_obj.setVisible(true);
-            player_obj.player_gui();
-            player_obj.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            player_obj.setBackground(Color.pink);
-            player_obj.setLocation(300, 300);
-            player_obj.setSize(500, 100);
+            if (videos.size() == 1) {
+                videos.clear();
+            }
+            new Reproductor(file, capaLogica, id, videos, capaLogica.getReproduccionTiempo(
+                    Integer.parseInt(id + "" + capaLogica.getUsuarioActual())));
         }
     }
 }
